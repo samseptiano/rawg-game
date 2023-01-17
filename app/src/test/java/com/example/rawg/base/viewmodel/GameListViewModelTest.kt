@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.rawg.MainCoroutinesRule
 import com.example.rawg.domain.usecase.sampleUseCase.SampleUseCase
-import com.example.rawg.ui.fragment.sample.ExampleViewModel
+import com.example.rawg.ui.viewmodel.GameListViewModel
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -19,10 +19,10 @@ import org.junit.runners.JUnit4
  * @author SamuelSep on 4/21/2021.
  */
 @RunWith(JUnit4::class)
-class ExampleViewModelTest {
+class GameListViewModelTest {
 
     // Subject under test
-    private lateinit var viewModel: ExampleViewModel
+    private lateinit var viewModel: GameListViewModel
 
     @ExperimentalCoroutinesApi
     @get:Rule
@@ -41,7 +41,7 @@ class ExampleViewModelTest {
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        viewModel = ExampleViewModel(context, useCase)
+        viewModel = GameListViewModel(context, useCase)
     }
 
     @After

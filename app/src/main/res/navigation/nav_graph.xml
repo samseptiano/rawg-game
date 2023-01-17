@@ -7,8 +7,8 @@
 
     <fragment
         android:id="@+id/sampleFragment"
-        android:name="com.example.rawg.ui.fragment.sample.sample_fragment.SampleFragment"
-        android:label="Biodata"
-        tools:layout="@layout/fragment_sample">
+        android:name="com.example.rawg.ui.fragment.GameListFragment"
+        android:label="List of Game"
+        tools:layout="@layout/fragment_game_list">
     </fragment>
 </navigation>

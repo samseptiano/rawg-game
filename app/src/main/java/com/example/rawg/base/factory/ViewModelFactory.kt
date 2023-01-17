@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.rawg.data.repository.SampleRepository
 import com.example.rawg.domain.usecase.sampleUseCase.SampleUseCase
-import com.example.rawg.ui.fragment.sample.ExampleViewModel
+import com.example.rawg.ui.viewmodel.GameListViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -20,7 +20,7 @@ class ViewModelFactory @Inject constructor(private val repository: SampleReposit
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return when {
-            modelClass.isAssignableFrom(ExampleViewModel::class.java) -> ExampleViewModel(
+            modelClass.isAssignableFrom(GameListViewModel::class.java) -> GameListViewModel(
                 context,
                 SampleUseCase(repository)
             ) as T

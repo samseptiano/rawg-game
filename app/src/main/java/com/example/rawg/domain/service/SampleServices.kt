@@ -1,7 +1,8 @@
 package com.example.rawg.domain.service
 
 
-import com.example.rawg.data.model.ProvinceResponseItem
+import com.example.rawg.base.data.BaseResponse
+import com.example.rawg.data.model.GameResponse
 import retrofit2.http.GET
 
 /**
@@ -10,7 +11,5 @@ import retrofit2.http.GET
 
 interface SampleServices {
     @GET(SampleRoutes.GET_ROUTE)
-    suspend fun getProvinceList(
-    ): List<ProvinceResponseItem>
-
+    suspend fun getGameList(): BaseResponse<List<GameResponse>>
 }

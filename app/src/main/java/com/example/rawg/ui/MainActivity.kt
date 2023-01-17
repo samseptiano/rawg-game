@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.rawg.R
-import com.example.rawg.base.viewmodel.BaseActivity
+import com.example.rawg.base.ui.BaseActivity
 import com.example.rawg.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -28,7 +28,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     }
 
     private fun setupNavigation() {
-        // Navigation
         setupActionBarWithNavController(navController)
     }
 

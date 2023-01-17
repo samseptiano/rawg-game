@@ -1,4 +1,4 @@
-package com.example.rawg.base.viewmodel
+package com.example.rawg.base.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
