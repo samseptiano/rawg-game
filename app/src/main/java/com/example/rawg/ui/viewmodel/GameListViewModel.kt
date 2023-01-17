@@ -31,8 +31,8 @@ class GameListViewModel @Inject constructor(
 //        useCase.run(param).collect {
 //            _gameList.value = it.data?.results
 //        }
-
         val aaa = ArrayList<GameResponse>()
+
         aaa.add(GameResponse(1, "", "aaa", "1111/11/11", ""))
         aaa.add(GameResponse(2, "", "bbb", "2222/22/22", ""))
         aaa.add(GameResponse(3, "", "ccc", "3333/33/33", ""))

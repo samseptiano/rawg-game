@@ -1,7 +1,7 @@
 package com.example.rawg.ui.fragment
 
-import EndlessRecyclerViewScrollListener
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rawg.base.ui.BaseFragment
+import com.example.rawg.base.ui.endlessscroll.EndlessRecyclerViewScrollListener
 import com.example.rawg.databinding.FragmentGameListBinding
 import com.example.rawg.ui.adapter.GameAdapter
 import com.example.rawg.ui.viewmodel.GameListViewModel
@@ -20,7 +21,7 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class GameListFragment : BaseFragment<FragmentGameListBinding>() {
-    private var endlessScroll: EndlessRecyclerViewScrollListener? = null
+    private lateinit var endlessScroll: EndlessRecyclerViewScrollListener
 
     private var gameAdapter = GameAdapter()
 
@@ -50,18 +51,22 @@ class GameListFragment : BaseFragment<FragmentGameListBinding>() {
     private fun setupRecycleView() {
         val layoutManagers = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
-        endlessScroll?.setOnLoadMoreListener(object : EndlessRecyclerViewScrollListener.OnLoadMoreListener {
-            override fun onLoadMore(step: Int) {
-                lifecycleScope.launch(Dispatchers.IO) {
-                    viewModel.getListGame(step + 1)
-                }
-            }
-        })
-
         binding.rvList.apply {
             layoutManager = layoutManagers
-            addOnScrollListener(endlessScroll!!)
             adapter = gameAdapter
+
+        }
+
+        endlessScroll = object : EndlessRecyclerViewScrollListener(layoutManagers) {
+            override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
+                lifecycleScope.launch(Dispatchers.Main) {
+                    viewModel.getListGame(page + 1)
+                }
+            }
+        }
+
+        binding.rvList.apply {
+            addOnScrollListener(endlessScroll)
         }
     }
 
