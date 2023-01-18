@@ -1,20 +1,6 @@
 <resources>
     <string name="app_name">Rawg App</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="search_photos">Search Photos</string>
-    <string name="search_latest">Search: Latest</string>
-    <string name="search">Search</string>
-    <string name="night_view">Night View</string>
-    <string name="share">Share</string>
-
-    <string name="msg_error_no_image_received">Sorry no images received</string>
-    <string name="msg_error_no_more_image_available">Sorry no more images available</string>
-    <string name="msg_data_received">Data Received</string>
-    <string name="msg_image_received">Image Received</string>
-    <string name="msg_loading">Loading More Image</string>
-    <string name="retry">Retry</string>
-    <string name="msg_no_internet">No Internet Available</string>
+    <string name="search_hint">Find the best game here...</string>
     <string name="msg_search_result">Search: %1$s</string>
 
     "Search: Latest"

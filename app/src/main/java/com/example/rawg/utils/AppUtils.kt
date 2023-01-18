@@ -1,6 +1,9 @@
 package com.example.rawg.utils
 
 import android.content.Context
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
@@ -44,4 +47,22 @@ fun View.showSnackBar(message: String, action: String = "", actionListener: () -
 fun EditText.hideKeyboard() {
     val keyboard: InputMethodManager? = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
     keyboard?.hideSoftInputFromWindow(windowToken, 0)
+}
+
+fun EditText.typingListener(delay: Long = 1000L, onTypingRun: (String) -> Unit) {
+    var timer = Timer()
+
+    this.addTextChangedListener(object : TextWatcher {
+        override fun afterTextChanged(s: Editable) {
+            timer.cancel()
+            timer = Timer()
+            timer.schedule(object : TimerTask() {
+                override fun run() {
+                    onTypingRun(s.toString())
+                }
+            }, delay)
+        }
+        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int){}
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+    })
 }

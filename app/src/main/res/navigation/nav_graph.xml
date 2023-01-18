@@ -3,12 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/sampleFragment">
+    app:startDestination="@id/gameListFragment">
 
     <fragment
-        android:id="@+id/sampleFragment"
+        android:id="@+id/gameListFragment"
         android:name="com.example.rawg.ui.fragment.GameListFragment"
         android:label="List of Game"
-        tools:layout="@layout/fragment_game_list">
-    </fragment>
+        tools:layout="@layout/fragment_game_list"/>
+
+    <fragment
+        android:id="@+id/gameDetailFragment"
+        android:name="com.example.rawg.ui.fragment.GameDetailFragment"
+        android:label="Detail Game"
+        tools:layout="@layout/fragment_game_detail"/>
+
 </navigation>

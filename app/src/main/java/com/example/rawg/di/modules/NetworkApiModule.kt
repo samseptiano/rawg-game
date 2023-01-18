@@ -3,7 +3,7 @@ package com.example.rawg.di.modules
 import com.example.rawg.base.coroutine.AppDispatchers
 import com.example.rawg.base.coroutine.AppDispatchersImpl
 import com.example.rawg.domain.service.SampleServices
-import com.example.rawg.utils.CONSTANTS.BASE_URL_SAMPLE
+import com.example.rawg.utils.CONSTANTS.BASE_URL
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import dagger.Module
 import dagger.Provides
@@ -31,7 +31,7 @@ class NetworkApiModule {
         gsonConverterFactory: GsonConverterFactory
     ): SampleServices {
         return Retrofit.Builder()
-            .baseUrl(BASE_URL_SAMPLE)
+            .baseUrl(BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(gsonConverterFactory)
             .addCallAdapterFactory(coroutineCallAdapterFactory)

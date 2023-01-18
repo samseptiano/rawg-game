@@ -16,7 +16,7 @@ import javax.inject.Inject
 class SampleUseCase @Inject constructor(private val repository: SampleDataSource) :
     BaseUseCase<ResultState<BaseResponse<List<GameResponse>>>, SampleUseCase.Params>() {
 
-    data class Params(val page: Int = 1)
+    data class Params(val page: Int? = null, val pageSize: Int? = null, val querySearch: String? = null)
 
     override suspend fun run(params: Params): Flow<ResultState<BaseResponse<List<GameResponse>>>> = flow<ResultState<BaseResponse<List<GameResponse>>>> {
         ResultState.success(repository.getGameList(),"")
