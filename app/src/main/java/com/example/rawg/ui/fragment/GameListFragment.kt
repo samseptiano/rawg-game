@@ -30,6 +30,7 @@ class GameListFragment : BaseFragment<FragmentGameListBinding>() {
     private lateinit var endlessScroll: EndlessRecyclerViewScrollListener
     private var pageSize: Int = 10
     private var currentPage:Int = 1
+    private var search: String? = null
     private var listGame = arrayListOf<GameItem>()
 
     private val gameAdapter by lazy {
@@ -53,15 +54,13 @@ class GameListFragment : BaseFragment<FragmentGameListBinding>() {
     private fun setupObserver() {
         lifecycleScope.launch {
             launch {
-                viewModel.getListGame(currentPage, pageSize)
+                viewModel.getListGame(currentPage, pageSize, search)
             }
             launch {
                 viewModel.gameList.observe(viewLifecycleOwner) {
+                    hideLoading()
+                    showRecycleView()
                     listGame.addAll(it as List<GameItem>)
-
-                    if(currentPage == 1){
-                        gameAdapter.clearList()
-                    }
                     gameAdapter.updateGameData(listGame)
                 }
             }
@@ -77,7 +76,7 @@ class GameListFragment : BaseFragment<FragmentGameListBinding>() {
                 lifecycleScope.launch(Dispatchers.Main) {
                     currentPage = page
                     Log.d("halaman", currentPage.toString())
-                    viewModel.getListGame(currentPage + 1, pageSize)
+                    viewModel.getListGame(currentPage + 1, pageSize, search)
                 }
             }
         }
@@ -91,14 +90,29 @@ class GameListFragment : BaseFragment<FragmentGameListBinding>() {
 
     private fun setupClickListener() {
         binding.rtSearch.typingListener {
-            lifecycleScope.launch(Dispatchers.Main) {
-                viewModel.getListGame(search = it.toString())
+            currentPage = 1
+            search = it
+
+            lifecycleScope.launch {
+                listGame.clear()
+                gameAdapter.resetGameData()
+                gameAdapter.notifyDataSetChanged()
+
+                viewModel.getListGame(page = currentPage, pageSize = pageSize, search = it)
             }
         }
 
         gameAdapter.whenItemClick {
             navigateToDetailPage(it)
         }
+    }
+
+    private fun hideLoading() {
+        binding.pbLoad.visibility = View.GONE
+    }
+
+    private fun showRecycleView() {
+        binding.rvList.visibility = View.VISIBLE
     }
 
     private fun navigateToDetailPage(data: GameItem) {

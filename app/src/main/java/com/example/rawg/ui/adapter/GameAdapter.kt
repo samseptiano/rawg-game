@@ -13,17 +13,14 @@ class GameAdapter : BaseAdapter<ItemGameBinding, ItemGameViewHolder>() {
     private var listGame = arrayListOf<GameItem>()
     private var onItemClick: (GameItem) -> Unit = {}
 
-    internal fun clearList() {
-        listGame.clear()
+    internal fun updateGameData(data: List<GameItem?>?) {
+        resetGameData()
+        listGame.addAll(data as Collection<GameItem>)
+        if(listGame.isNotEmpty()) notifyItemInserted(listGame.size)
     }
 
-    internal fun updateGameData(data: List<GameItem?>?) {
-        listGame.addAll(data as Collection<GameItem>)
-        notifyItemInserted(listGame.size)
-//        data?.mapIndexed { index, gameResponse ->
-//            gameResponse?.let { listGame.add(it) }
-//            notifyItemInserted(index)
-//        }
+    internal fun resetGameData() {
+        listGame.clear()
     }
 
     internal fun whenItemClick(itemClick: (GameItem) -> Unit) {
