@@ -14,6 +14,7 @@ import com.example.rawg.R
 import com.example.rawg.base.ui.BaseFragment
 import com.example.rawg.base.ui.endlessscroll.EndlessRecyclerViewScrollListener
 import com.example.rawg.data.model.GameResponse
+import com.example.rawg.data.modelMapper.GameItem
 import com.example.rawg.databinding.FragmentGameListBinding
 import com.example.rawg.ui.adapter.GameAdapter
 import com.example.rawg.ui.viewmodel.GameListViewModel
@@ -85,7 +86,7 @@ class GameListFragment : BaseFragment<FragmentGameListBinding>() {
         }
     }
 
-    private fun navigateToDetailPage(data: GameResponse) {
+    private fun navigateToDetailPage(data: GameItem) {
         val bundle = bundleOf(CONSTANTS.TAG_GAME_ID to data.id)
         findNavController().navigate(R.id.gameDetailFragment, bundle)
     }

@@ -1,0 +1,17 @@
+package com.example.rawg.data.modelMapper
+
+import com.google.gson.annotations.SerializedName
+
+data class GameDetail(
+    var id: Int,
+    var slug: String,
+    var name: String,
+    var released: String,
+    var background_image: String,
+    var platforms: Platform,
+    var originalName: String? = null,
+    var description: String? = null,
+    var website: String? = null,
+    var rating: String? = null,
+    var playtime: String? = null,
+)

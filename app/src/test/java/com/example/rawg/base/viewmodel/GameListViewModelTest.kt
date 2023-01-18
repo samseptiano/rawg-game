@@ -3,7 +3,7 @@ package com.example.rawg.base.viewmodel
 import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.rawg.MainCoroutinesRule
-import com.example.rawg.domain.usecase.sampleUseCase.SampleUseCase
+import com.example.rawg.domain.usecase.sampleUseCase.GameListUseCase
 import com.example.rawg.ui.viewmodel.GameListViewModel
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
@@ -32,7 +32,7 @@ class GameListViewModelTest {
     var instantExecutorRule = InstantTaskExecutorRule()
 
     @MockK
-    lateinit var useCase : SampleUseCase
+    lateinit var useCase : GameListUseCase
 
 
     @MockK

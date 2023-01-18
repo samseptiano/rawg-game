@@ -6,13 +6,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.rawg.base.ui.BaseAdapter
 import com.example.rawg.data.model.GameResponse
+import com.example.rawg.data.modelMapper.GameItem
 import com.example.rawg.databinding.ItemGameBinding
 
 class GameAdapter : BaseAdapter<ItemGameBinding, ItemGameViewHolder>() {
-    private var listGame = arrayListOf<GameResponse>()
-    private var onItemClick : (GameResponse) -> Unit = {}
+    private var listGame = arrayListOf<GameItem>()
+    private var onItemClick : (GameItem) -> Unit = {}
 
-    internal fun updateGameData(data: List<GameResponse?>?) {
+    internal fun updateGameData(data: List<GameItem?>?) {
         listGame.clear()
         data?.mapIndexed { index, gameResponse ->
             gameResponse?.let { listGame.add(it) }
@@ -20,7 +21,7 @@ class GameAdapter : BaseAdapter<ItemGameBinding, ItemGameViewHolder>() {
         }
     }
 
-    internal fun whenItemClick(itemClick: (GameResponse) -> Unit) {
+    internal fun whenItemClick(itemClick: (GameItem) -> Unit) {
         onItemClick = { itemClick(it) }
     }
 
@@ -41,7 +42,7 @@ class GameAdapter : BaseAdapter<ItemGameBinding, ItemGameViewHolder>() {
 
 
 class ItemGameViewHolder(private val binding: ItemGameBinding): RecyclerView.ViewHolder(binding.root) {
-    internal fun bind(game: GameResponse, onItemClick: (GameResponse) -> Unit) {
+    internal fun bind(game: GameItem, onItemClick: (GameItem) -> Unit) {
         binding.titleGame.text = game.name
         binding.releaseGame.text = game.released
         if(game.background_image.isNotEmpty()) {

@@ -1,5 +1,7 @@
 package com.example.rawg.data.model
 
+import com.example.rawg.data.modelMapper.GameDetail
+import com.example.rawg.data.modelMapper.GameItem
 import com.google.gson.annotations.SerializedName
 
 data class GameResponse(
@@ -14,5 +16,23 @@ data class GameResponse(
     @field:SerializedName("background_image")
     var background_image: String,
     @field:SerializedName("platforms")
-    var platforms: PlatformResponse? = null,
-)
+    var platforms: PlatformResponse,
+    @field:SerializedName("name_original")
+    var originalName: String? = null,
+    @field:SerializedName("description")
+    var description: String? = null,
+    @field:SerializedName("website")
+    var website: String? = null,
+    @field:SerializedName("rating")
+    var rating: String? = null,
+    @field:SerializedName("playtime")
+    var playtime: String? = null,
+) {
+    fun toGameItem() : GameItem {
+        return GameItem(id, slug, name, released, background_image, platforms.toPlatform())
+    }
+
+    fun toGameDetail() : GameDetail {
+        return GameDetail(id, slug, name, released, background_image, platforms.toPlatform(), originalName, description, website, rating, playtime)
+    }
+}
