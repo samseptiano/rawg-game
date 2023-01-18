@@ -2,7 +2,7 @@ package com.example.rawg.base.data
 
 import com.google.gson.annotations.SerializedName
 
-class BaseResponse<T>(
+class ResponseWrapper<T>(
     @field:SerializedName("count")
     var count: Int,
     @field:SerializedName("next")

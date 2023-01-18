@@ -1,7 +1,7 @@
 package com.example.rawg.di.modules
 
 import com.example.rawg.data.repository.datasource.SampleDataSource
-import com.example.rawg.data.repository.SampleRepository
+import com.example.rawg.data.repository.SampleDataSourceImpl
 import com.example.rawg.domain.service.SampleServices
 import dagger.Module
 import dagger.Provides
@@ -15,7 +15,7 @@ class GeneralRepositoryModule {
     @Singleton
     @Provides
     fun provideProvinceDataSource(apiService: SampleServices): SampleDataSource {
-        return SampleRepository(apiService)
+        return SampleDataSourceImpl(apiService)
     }
 
 }

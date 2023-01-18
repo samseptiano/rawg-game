@@ -1,9 +1,10 @@
 package com.example.rawg.domain.service
 
 
-import com.example.rawg.base.data.BaseResponse
+import com.example.rawg.base.data.ResponseWrapper
 import com.example.rawg.data.model.GameResponse
 import com.example.rawg.utils.CONSTANTS
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -19,11 +20,11 @@ interface SampleServices {
         @Query("page") page: Int? = null,
         @Query("page_size") pageSize: Int? = null,
         @Query("search") search: String? = null
-    ): BaseResponse<List<GameResponse>>
+    ): Response<ResponseWrapper<List<GameResponse?>?>>
 
     @GET(Routes.GET_DETAIL_GAMES)
     suspend fun getGameDetail(
-        @Query("key") apikey: String = CONSTANTS.API_KEY,
-        @Path("id") gameId: Int
-    ): BaseResponse<GameResponse>
+        @Path("id") gameId: Int,
+        @Query("key") apikey: String = CONSTANTS.API_KEY
+    ): Response<ResponseWrapper<GameResponse>>
 }

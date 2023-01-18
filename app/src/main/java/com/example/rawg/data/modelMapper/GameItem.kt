@@ -6,5 +6,5 @@ data class GameItem(
     var name: String,
     var released: String,
     var background_image: String,
-    var platforms: Platform
+    var platforms: List<Platform>
 )

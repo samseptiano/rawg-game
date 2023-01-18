@@ -11,6 +11,7 @@ import com.example.rawg.domain.usecase.sampleUseCase.GameListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import javax.inject.Inject
 
 /**
@@ -30,7 +31,7 @@ class GameDetailViewModel @Inject constructor(
 
     internal suspend fun getDetailGame(id: Int) {
         val param = GameDetailUseCase.Params(id)
-        useCase.run(param).collect {
+        useCase.run(param).collectLatest {
             _gameDetail.value = it.data?.results
         }
     }

@@ -8,7 +8,7 @@ data class GameDetail(
     var name: String,
     var released: String,
     var background_image: String,
-    var platforms: Platform,
+    var platforms: List<Platform>,
     var originalName: String? = null,
     var description: String? = null,
     var website: String? = null,

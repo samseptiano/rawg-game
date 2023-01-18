@@ -3,7 +3,7 @@ package com.example.rawg.base.factory
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.rawg.data.repository.SampleRepository
+import com.example.rawg.data.repository.SampleDataSourceImpl
 import com.example.rawg.domain.usecase.sampleUseCase.GameDetailUseCase
 import com.example.rawg.domain.usecase.sampleUseCase.GameListUseCase
 import com.example.rawg.ui.viewmodel.GameDetailViewModel
@@ -17,7 +17,7 @@ import javax.inject.Singleton
  */
 @Singleton
 @Suppress("UNCHECKED_CAST")
-class ViewModelFactory @Inject constructor(private val repository: SampleRepository, @ApplicationContext private val context: Context) :
+class ViewModelFactory @Inject constructor(private val repository: SampleDataSourceImpl, @ApplicationContext private val context: Context) :
     ViewModelProvider.NewInstanceFactory() {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

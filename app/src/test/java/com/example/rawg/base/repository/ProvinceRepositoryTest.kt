@@ -1,7 +1,7 @@
 package com.example.rawg.base.repository
 
 import com.example.rawg.data.model.ProvinceResponseItem
-import com.example.rawg.data.repository.SampleRepository
+import com.example.rawg.data.repository.SampleDataSourceImpl
 import com.example.rawg.domain.service.SampleServices
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
@@ -15,7 +15,7 @@ import org.junit.runners.JUnit4
 @RunWith(JUnit4::class)
 
  class ProvinceRepositoryTest{
-    lateinit var provinceRepository: SampleRepository
+    lateinit var provinceRepository: SampleDataSourceImpl
     @MockK
     lateinit var sampleServices: SampleServices
 
@@ -23,7 +23,7 @@ import org.junit.runners.JUnit4
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        provinceRepository = SampleRepository(sampleServices)
+        provinceRepository = SampleDataSourceImpl(sampleServices)
     }
 
     @Test

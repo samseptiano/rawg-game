@@ -7,14 +7,14 @@ import com.google.gson.annotations.SerializedName
 
 data class PlatformResponse(
     @field:SerializedName("platform")
-    var platform: PlatformItemResponse,
+    var platform: PlatformItemResponse?,
     @field:SerializedName("release_at")
-    var releaseAt: String,
+    var releaseAt: String?,
     @field:SerializedName("requirements")
-    var requirements: PlatformRequirementResponse,
+    var requirements: PlatformRequirementResponse?,
 ) {
     fun toPlatform() : Platform {
-        return Platform(platform.toPlatformItem(), releaseAt, requirements.toPlatformRequirement())
+        return Platform(platform?.toPlatformItem(), releaseAt?:"", requirements?.toPlatformRequirement())
     }
 }
 

@@ -28,8 +28,13 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class GameListFragment : BaseFragment<FragmentGameListBinding>() {
     private lateinit var endlessScroll: EndlessRecyclerViewScrollListener
-    private lateinit var gameAdapter: GameAdapter
     private var pageSize: Int = 10
+    private var currentPage:Int = 1
+    private var listGame = arrayListOf<GameItem>()
+
+    private val gameAdapter by lazy {
+        GameAdapter()
+    }
 
     override val inflateLayout: (LayoutInflater, ViewGroup?, Boolean) -> FragmentGameListBinding
         get() = FragmentGameListBinding::inflate
@@ -42,27 +47,37 @@ class GameListFragment : BaseFragment<FragmentGameListBinding>() {
         super.onViewCreated(view, savedInstanceState)
         setupRecycleView()
         setupClickListener()
+        setupObserver()
+    }
 
-        lifecycleScope.launchWhenCreated {
+    private fun setupObserver() {
+        lifecycleScope.launch {
             launch {
-                viewModel.getListGame(1, pageSize)
+                viewModel.getListGame(currentPage, pageSize)
             }
             launch {
-                viewModel.gameList.observe(viewLifecycleOwner){
-                    gameAdapter.updateGameData(it)
+                viewModel.gameList.observe(viewLifecycleOwner) {
+                    listGame.addAll(it as List<GameItem>)
+
+                    if(currentPage == 1){
+                        gameAdapter.clearList()
+                    }
+                    gameAdapter.updateGameData(listGame)
                 }
             }
         }
     }
 
     private fun setupRecycleView() {
-        gameAdapter = GameAdapter()
-        val layoutManagers = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        val layoutManagers =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
         endlessScroll = object : EndlessRecyclerViewScrollListener(layoutManagers) {
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
                 lifecycleScope.launch(Dispatchers.Main) {
-                    viewModel.getListGame(page + 1, pageSize)
+                    currentPage = page
+                    Log.d("halaman", currentPage.toString())
+                    viewModel.getListGame(currentPage + 1, pageSize)
                 }
             }
         }
@@ -82,7 +97,7 @@ class GameListFragment : BaseFragment<FragmentGameListBinding>() {
         }
 
         gameAdapter.whenItemClick {
-           navigateToDetailPage(it)
+            navigateToDetailPage(it)
         }
     }
 

@@ -1,6 +1,6 @@
 package com.example.rawg.base.viewmodel.usecases
 
-import com.example.rawg.data.repository.SampleRepository
+import com.example.rawg.data.repository.SampleDataSourceImpl
 import io.mockk.MockKAnnotations
 import io.mockk.impl.annotations.MockK
 import org.junit.After
@@ -15,7 +15,7 @@ import org.junit.runners.JUnit4
 class ProvinceUseCaseTest {
 
     @MockK
-    private lateinit var repository: SampleRepository
+    private lateinit var repository: SampleDataSourceImpl
 
     @Before
     fun setUp() {

@@ -16,7 +16,7 @@ data class GameResponse(
     @field:SerializedName("background_image")
     var background_image: String,
     @field:SerializedName("platforms")
-    var platforms: PlatformResponse,
+    var platforms: List<PlatformResponse>?,
     @field:SerializedName("name_original")
     var originalName: String? = null,
     @field:SerializedName("description")
@@ -29,10 +29,12 @@ data class GameResponse(
     var playtime: String? = null,
 ) {
     fun toGameItem() : GameItem {
-        return GameItem(id, slug, name, released, background_image, platforms.toPlatform())
+        return GameItem(id, slug, name, released, background_image,
+            platforms?.map { it.toPlatform() } ?: listOf())
     }
 
     fun toGameDetail() : GameDetail {
-        return GameDetail(id, slug, name, released, background_image, platforms.toPlatform(), originalName, description, website, rating, playtime)
+        return GameDetail(id, slug, name, released, background_image,
+            platforms?.map { it.toPlatform() } ?: listOf(), originalName, description, website, rating, playtime)
     }
 }

@@ -11,14 +11,19 @@ import com.example.rawg.databinding.ItemGameBinding
 
 class GameAdapter : BaseAdapter<ItemGameBinding, ItemGameViewHolder>() {
     private var listGame = arrayListOf<GameItem>()
-    private var onItemClick : (GameItem) -> Unit = {}
+    private var onItemClick: (GameItem) -> Unit = {}
+
+    internal fun clearList() {
+        listGame.clear()
+    }
 
     internal fun updateGameData(data: List<GameItem?>?) {
-        listGame.clear()
-        data?.mapIndexed { index, gameResponse ->
-            gameResponse?.let { listGame.add(it) }
-            notifyItemChanged(index)
-        }
+        listGame.addAll(data as Collection<GameItem>)
+        notifyItemInserted(listGame.size)
+//        data?.mapIndexed { index, gameResponse ->
+//            gameResponse?.let { listGame.add(it) }
+//            notifyItemInserted(index)
+//        }
     }
 
     internal fun whenItemClick(itemClick: (GameItem) -> Unit) {
@@ -37,15 +42,16 @@ class GameAdapter : BaseAdapter<ItemGameBinding, ItemGameViewHolder>() {
         (holder as ItemGameViewHolder).bind(listGame[position], onItemClick)
     }
 
-    override fun totalItem(): Int  = listGame.size
+    override fun totalItem(): Int = listGame.size
 }
 
 
-class ItemGameViewHolder(private val binding: ItemGameBinding): RecyclerView.ViewHolder(binding.root) {
+class ItemGameViewHolder(private val binding: ItemGameBinding) :
+    RecyclerView.ViewHolder(binding.root) {
     internal fun bind(game: GameItem, onItemClick: (GameItem) -> Unit) {
         binding.titleGame.text = game.name
         binding.releaseGame.text = game.released
-        if(game.background_image.isNotEmpty()) {
+        if (game.background_image.isNotEmpty()) {
             Glide.with(binding.root.context).load(game.background_image).into(binding.iconGame)
         }
 
