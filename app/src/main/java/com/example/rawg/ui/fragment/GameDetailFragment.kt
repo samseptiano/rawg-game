@@ -1,6 +1,7 @@
 package com.example.rawg.ui.fragment
 
 import android.os.Bundle
+import android.text.Html
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,13 +15,9 @@ import com.example.rawg.base.ui.BaseFragment
 import com.example.rawg.base.ui.endlessscroll.EndlessRecyclerViewScrollListener
 import com.example.rawg.data.modelMapper.GameDetail
 import com.example.rawg.databinding.FragmentGameDetailBinding
-import com.example.rawg.databinding.FragmentGameListBinding
-import com.example.rawg.ui.adapter.GameAdapter
 import com.example.rawg.ui.viewmodel.GameDetailViewModel
-import com.example.rawg.ui.viewmodel.GameListViewModel
 import com.example.rawg.utils.CONSTANTS
 import com.example.rawg.utils.obtainViewModel
-import com.example.rawg.utils.typingListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -56,7 +53,24 @@ class GameDetailFragment : BaseFragment<FragmentGameDetailBinding>() {
     }
 
     private fun setupBinding(data: GameDetail) {
-        Toast.makeText(requireContext(), data.name, Toast.LENGTH_LONG).show()
+        binding.apply {
+            var platforms = ""
+            data.platforms.mapIndexed { index, platform ->
+                platforms += platform.platform?.name.orEmpty()
+                if(index < data.platforms.size - 1) platforms += ", "
+            }
+
+            Glide.with(requireContext()).load(data.background_image).into(imageGame)
+            gameTitle.text = data.name
+            gameRelease.text = "Released on: ${data.released}"
+            gamePlaytime.text = "Total playtime: ${data.playtime} hours"
+            gamePlatform.text = "Support on: ${platforms}"
+            gameWebsite.text = data.website
+            gameOriginalName.text = "${data.name} (a.k.a ${data.originalName})"
+            gameRating.text = "${data.rating}/5"
+            gameRatingStar.rating = data.rating?.toFloat() ?: 0f
+            gameDescription.text = Html.fromHtml(data.description)
+        }
     }
 
 }

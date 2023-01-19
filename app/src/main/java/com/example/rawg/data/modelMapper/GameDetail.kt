@@ -1,7 +1,5 @@
 package com.example.rawg.data.modelMapper
 
-import com.google.gson.annotations.SerializedName
-
 data class GameDetail(
     var id: Int,
     var slug: String,

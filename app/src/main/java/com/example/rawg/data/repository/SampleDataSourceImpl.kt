@@ -38,20 +38,13 @@ class SampleDataSourceImpl @Inject constructor(private val sampleServices: Sampl
     }
 
 
-    override suspend fun getGameDetail(id: Int): Flow<ResultState<ResponseWrapper<GameDetail>>> =
+    override suspend fun getGameDetail(id: Int): Flow<ResultState<GameDetail?>> =
         flow {
             ApiHandler.handleApi {
                 sampleServices.getGameDetail(gameId = id)
             }.apply {
                 emit(
-                    ResultState.success(
-                        ResponseWrapper(
-                            this?.count ?: 0,
-                            this?.next ?: "",
-                            this?.previous ?: "",
-                            this?.results!!.toGameDetail()
-                        )
-                    )
+                    ResultState.success(this?.toGameDetail())
                 )
             }
 

@@ -75,7 +75,6 @@ class GameListFragment : BaseFragment<FragmentGameListBinding>() {
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
                 lifecycleScope.launch(Dispatchers.Main) {
                     currentPage = page
-                    Log.d("halaman", currentPage.toString())
                     viewModel.getListGame(currentPage + 1, pageSize, search)
                 }
             }
@@ -103,6 +102,7 @@ class GameListFragment : BaseFragment<FragmentGameListBinding>() {
         }
 
         gameAdapter.whenItemClick {
+            listGame.clear()
             navigateToDetailPage(it)
         }
     }

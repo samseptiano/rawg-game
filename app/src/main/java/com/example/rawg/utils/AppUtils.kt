@@ -54,6 +54,7 @@ fun EditText.typingListener(delay: Long = 1000L, onTypingRun: (String) -> Unit) 
 
     this.addTextChangedListener(object : TextWatcher {
         override fun afterTextChanged(s: Editable) {
+            if(!this@typingListener.hasFocus()) return
             timer.cancel()
             timer = Timer()
             timer.schedule(object : TimerTask() {

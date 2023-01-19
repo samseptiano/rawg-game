@@ -11,5 +11,5 @@ import kotlinx.coroutines.flow.Flow
  */
 interface SampleDataSource {
     suspend fun getGameList(page: Int?, pageCount: Int?, search: String?): Flow<ResultState<ResponseWrapper<List<GameItem?>?>>>
-    suspend fun getGameDetail(id: Int): Flow<ResultState<ResponseWrapper<GameDetail>>>
+    suspend fun getGameDetail(id: Int): Flow<ResultState<GameDetail?>>
 }

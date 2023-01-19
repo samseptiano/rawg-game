@@ -31,8 +31,8 @@ class GameDetailViewModel @Inject constructor(
 
     internal suspend fun getDetailGame(id: Int) {
         val param = GameDetailUseCase.Params(id)
-        useCase.run(param).collectLatest {
-            _gameDetail.value = it.data?.results
+        useCase.run(param).collect {
+            _gameDetail.value = it.data
         }
     }
 }

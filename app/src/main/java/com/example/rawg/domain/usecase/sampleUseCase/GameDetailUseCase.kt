@@ -14,11 +14,11 @@ import javax.inject.Inject
  * @author SamuelSep on 4/20/2021.
  */
 class GameDetailUseCase @Inject constructor(private val repository: SampleDataSource) :
-    BaseUseCase<ResultState<ResponseWrapper<GameDetail>>, GameDetailUseCase.Params>() {
+    BaseUseCase<ResultState<GameDetail?>, GameDetailUseCase.Params>() {
 
     data class Params(val id: Int)
 
-    override suspend fun run(params: Params): Flow<ResultState<ResponseWrapper<GameDetail>>> {
+    override suspend fun run(params: Params): Flow<ResultState<GameDetail?>> {
         return repository.getGameDetail(params.id)
     }
 

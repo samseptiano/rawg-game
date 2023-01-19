@@ -26,5 +26,5 @@ interface SampleServices {
     suspend fun getGameDetail(
         @Path("id") gameId: Int,
         @Query("key") apikey: String = CONSTANTS.API_KEY
-    ): Response<ResponseWrapper<GameResponse>>
+    ): Response<GameResponse>
 }
