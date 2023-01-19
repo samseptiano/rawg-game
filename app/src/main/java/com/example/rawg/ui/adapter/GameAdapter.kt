@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.rawg.R
 import com.example.rawg.base.ui.BaseAdapter
 import com.example.rawg.data.model.GameResponse
 import com.example.rawg.data.modelMapper.GameItem
@@ -49,7 +50,7 @@ class ItemGameViewHolder(private val binding: ItemGameBinding) :
         binding.titleGame.text = game.name
         binding.releaseGame.text = game.released
         if (game.background_image.isNotEmpty()) {
-            Glide.with(binding.root.context).load(game.background_image).into(binding.iconGame)
+            Glide.with(binding.root.context).load(game.background_image).placeholder(R.drawable.ic_launcher_background).into(binding.iconGame)
         }
 
         binding.root.setOnClickListener {

@@ -57,10 +57,17 @@ class GameListFragment : BaseFragment<FragmentGameListBinding>() {
                 viewModel.getListGame(currentPage, pageSize, search)
             }
             launch {
-                viewModel.gameList.observe(viewLifecycleOwner) {
+                viewModel.gameList.observe(viewLifecycleOwner) { listGames ->
                     hideLoading()
                     showRecycleView()
-                    listGame.addAll(it as List<GameItem>)
+
+                   listGames?.mapIndexed { index, gameItem ->
+                       if(listGame.isNotEmpty() && gameItem?.id == listGame[index].id) {
+                           listGame.remove(listGame[index])
+                       }
+                   }
+
+                    listGame.addAll(listGames as List<GameItem>)
                     gameAdapter.updateGameData(listGame)
                 }
             }
@@ -93,6 +100,7 @@ class GameListFragment : BaseFragment<FragmentGameListBinding>() {
             search = it
 
             lifecycleScope.launch {
+                showLoading()
                 listGame.clear()
                 gameAdapter.resetGameData()
                 gameAdapter.notifyDataSetChanged()
@@ -102,13 +110,16 @@ class GameListFragment : BaseFragment<FragmentGameListBinding>() {
         }
 
         gameAdapter.whenItemClick {
-            listGame.clear()
             navigateToDetailPage(it)
         }
     }
 
     private fun hideLoading() {
         binding.pbLoad.visibility = View.GONE
+    }
+
+    private fun showLoading() {
+        binding.pbLoad.visibility = View.VISIBLE
     }
 
     private fun showRecycleView() {
