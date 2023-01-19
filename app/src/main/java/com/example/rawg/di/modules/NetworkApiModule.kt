@@ -2,6 +2,7 @@ package com.example.rawg.di.modules
 
 import com.example.rawg.base.coroutine.AppDispatchers
 import com.example.rawg.base.coroutine.AppDispatchersImpl
+import com.example.rawg.di.qualifier.GameOkHttpClientQualifier
 import com.example.rawg.domain.service.SampleServices
 import com.example.rawg.utils.CONSTANTS.BASE_URL
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
@@ -25,7 +26,8 @@ class NetworkApiModule {
 
     @Singleton
     @Provides
-    fun buildProvinceServicesClient(
+    fun buildSampleServicesClient(
+        @GameOkHttpClientQualifier
         okHttpClient: OkHttpClient,
         coroutineCallAdapterFactory: CoroutineCallAdapterFactory,
         gsonConverterFactory: GsonConverterFactory
@@ -41,6 +43,7 @@ class NetworkApiModule {
 
     @Singleton
     @Provides
+    @GameOkHttpClientQualifier
     fun buildOkHttpClient(): OkHttpClient {
         return OkHttpClient().newBuilder().also { item ->
             val log = HttpLoggingInterceptor()

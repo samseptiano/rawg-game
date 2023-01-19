@@ -14,7 +14,7 @@ buildscript {
         material_version = "1.4.0"
         constraint_version = "2.1.0"
         recycler_version = "1.2.1"
-        room_version = "2.4.2"
+        room_version = "2.3.0"
     }
     repositories {
         google()
