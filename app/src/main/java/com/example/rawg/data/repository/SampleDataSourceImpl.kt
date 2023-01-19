@@ -22,34 +22,37 @@ class SampleDataSourceImpl @Inject constructor(private val sampleServices: Sampl
         page: Int?,
         pageCount: Int?,
         search: String?
-    ): Flow<ResultState<ResponseWrapper<List<GameItem?>?>>> = flow {
-        ApiHandler.handleApi {
-            sampleServices.getGameList(page = page, pageSize = pageCount, search = search)
-        }.apply {
-            emit(ResultState.success(ResponseWrapper(
-                this?.count ?: 0,
-                this?.next ?: "",
-                this?.previous ?: "",
-                this?.results?.map { it?.toGameItem() }
-            )))
+    ): ResultState<ResponseWrapper<List<GameItem?>?>> {
+        return try {
+            val result = ApiHandler.handleApi {
+                sampleServices.getGameList(page = page, pageSize = pageCount, search = search)
+            }
+
+
+            ResultState.Success(ResponseWrapper(
+                result?.count ?: 0,
+                result?.next ?: "",
+                result?.previous ?: "",
+                result?.results?.map { it?.toGameItem() }
+            ))
+        } catch (e: Exception) {
+            ResultState.Error(e)
         }
-    }.catch { e ->
-        ResultState.error(null, e.toString())
+
     }
 
 
-    override suspend fun getGameDetail(id: Int): Flow<ResultState<GameDetail?>> =
-        flow {
+    override suspend fun getGameDetail(id: Int): ResultState<GameDetail?> {
+        try {
             ApiHandler.handleApi {
                 sampleServices.getGameDetail(gameId = id)
             }.apply {
-                emit(
-                    ResultState.success(this?.toGameDetail())
-                )
+                return ResultState.Success(this?.toGameDetail())
             }
-
-        }.catch { e ->
-            ResultState.error(null, e.toString())
+        } catch (e: Exception) {
+            return ResultState.Error(e)
         }
+
+    }
 
 }

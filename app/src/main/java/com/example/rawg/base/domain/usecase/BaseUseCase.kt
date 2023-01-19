@@ -9,13 +9,13 @@ import kotlinx.coroutines.launch
 
 abstract class BaseUseCase<out Type, in Params> where Type : Any {
 
-    abstract suspend fun run(params: Params): Flow<Type>
+    abstract suspend fun run(params: Params): Type
 
     operator fun invoke(
         params: Params,
         scope: CoroutineScope,
         appDispatchers: AppDispatchers,
-        onResult: (Flow<Type>) -> Unit = {}
+        onResult: (Type) -> Unit = {}
     ) {
         scope.launch {
             val deferred = async(appDispatchers.io) {

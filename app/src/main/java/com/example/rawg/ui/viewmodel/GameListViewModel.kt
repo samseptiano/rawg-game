@@ -8,8 +8,6 @@ import com.example.rawg.data.modelMapper.GameItem
 import com.example.rawg.domain.usecase.sampleUseCase.GameListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
 import javax.inject.Inject
 
 /**
@@ -29,8 +27,11 @@ class GameListViewModel @Inject constructor(
 
     internal suspend fun getListGame(page: Int? = null, pageSize: Int? = null, search: String? = null) {
         val param = GameListUseCase.Params(page, pageSize, search)
-        useCase.run(param).collect {
-            _gameList.value = it.data?.results
+        useCase.run(param).apply {
+            onSuccess {
+                _gameList.value = it.results
+
+            }
         }
     }
 }

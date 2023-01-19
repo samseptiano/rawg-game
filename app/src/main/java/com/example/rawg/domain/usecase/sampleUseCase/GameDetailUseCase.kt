@@ -18,7 +18,7 @@ class GameDetailUseCase @Inject constructor(private val repository: SampleDataSo
 
     data class Params(val id: Int)
 
-    override suspend fun run(params: Params): Flow<ResultState<GameDetail?>> {
+    override suspend fun run(params: Params): ResultState<GameDetail?> {
         return repository.getGameDetail(params.id)
     }
 
