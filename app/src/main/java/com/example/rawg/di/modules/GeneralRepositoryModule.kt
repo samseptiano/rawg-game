@@ -2,7 +2,9 @@ package com.example.rawg.di.modules
 
 import com.example.rawg.data.repository.datasource.SampleDataSource
 import com.example.rawg.data.repository.SampleDataSourceImpl
+import com.example.rawg.domain.dao.FavoriteGameDao
 import com.example.rawg.domain.service.SampleServices
+import com.example.rawg.domain.usecase.sampleUseCase.GameFavoritUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,8 +16,8 @@ import javax.inject.Singleton
 class GeneralRepositoryModule {
     @Singleton
     @Provides
-    fun provideProvinceDataSource(apiService: SampleServices): SampleDataSource {
-        return SampleDataSourceImpl(apiService)
+    fun provideSampleDataSource(apiService: SampleServices, favoritDao: FavoriteGameDao): SampleDataSource {
+        return SampleDataSourceImpl(apiService, favoritDao)
     }
 
 }

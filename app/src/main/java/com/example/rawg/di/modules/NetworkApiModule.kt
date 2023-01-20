@@ -59,8 +59,6 @@ class NetworkApiModule {
         return AppDispatchersImpl()
     }
 
-
-
     @Provides
     @Singleton
     fun getGsonConverterFactory(): GsonConverterFactory {

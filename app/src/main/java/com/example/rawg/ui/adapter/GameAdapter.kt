@@ -1,22 +1,28 @@
 package com.example.rawg.ui.adapter
 
+import android.R.color
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.rawg.R
 import com.example.rawg.base.ui.BaseAdapter
-import com.example.rawg.data.model.GameResponse
 import com.example.rawg.data.modelMapper.GameItem
+import com.example.rawg.data.roomModel.RoomGameDetail
 import com.example.rawg.databinding.ItemGameBinding
 
-class GameAdapter : BaseAdapter<ItemGameBinding, ItemGameViewHolder>() {
-    private var listGame = arrayListOf<GameItem>()
-    private var onItemClick: (GameItem) -> Unit = {}
 
-    internal fun updateGameData(data: List<GameItem?>?) {
+class GameAdapter<T> : BaseAdapter<ItemGameBinding, ItemGameViewHolder>() {
+    private var listGame = arrayListOf<T>()
+    private var onItemClick: (T) -> Unit = {}
+    private var onAddFavorit: (T, Int) -> Unit = { data, position -> }
+
+    internal fun updateGameData(data: List<T?>?) {
         resetGameData()
-        listGame.addAll(data as Collection<GameItem>)
+        listGame.addAll(data as Collection<T>)
         if(listGame.isNotEmpty()) notifyItemInserted(listGame.size)
     }
 
@@ -24,8 +30,12 @@ class GameAdapter : BaseAdapter<ItemGameBinding, ItemGameViewHolder>() {
         listGame.clear()
     }
 
-    internal fun whenItemClick(itemClick: (GameItem) -> Unit) {
+    internal fun whenItemClick(itemClick: (T) -> Unit) {
         onItemClick = { itemClick(it) }
+    }
+
+    internal fun whenFavoritClick(addFavoritClick: (T, Int) -> Unit) {
+        onAddFavorit = { data, position -> addFavoritClick(data, position) }
     }
 
     override fun getBindingAdapter(parent: ViewGroup): ItemGameBinding {
@@ -37,7 +47,7 @@ class GameAdapter : BaseAdapter<ItemGameBinding, ItemGameViewHolder>() {
     }
 
     override fun bindVH(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as ItemGameViewHolder).bind(listGame[position], onItemClick)
+        (holder as ItemGameViewHolder).bind(listGame[position], position, onItemClick, onAddFavorit)
     }
 
     override fun totalItem(): Int = listGame.size
@@ -46,15 +56,64 @@ class GameAdapter : BaseAdapter<ItemGameBinding, ItemGameViewHolder>() {
 
 class ItemGameViewHolder(private val binding: ItemGameBinding) :
     RecyclerView.ViewHolder(binding.root) {
-    internal fun bind(game: GameItem, onItemClick: (GameItem) -> Unit) {
-        binding.titleGame.text = game.name
-        binding.releaseGame.text = game.released
-        if (game.background_image.isNotEmpty()) {
-            Glide.with(binding.root.context).load(game.background_image).placeholder(R.drawable.ic_launcher_background).into(binding.iconGame)
+    internal fun <T>bind(game: T, position: Int, onItemClick: (T) -> Unit, onAddFavorite: (T, Int) -> Unit) {
+        when(game) {
+            is GameItem -> {
+                binding.titleGame.text = game.name
+                binding.releaseGame.text = game.released
+                if (game.background_image.isNotEmpty()) {
+                    Glide.with(binding.root.context).load(game.background_image).placeholder(R.drawable.ic_launcher_background).into(binding.iconGame)
+                }
+
+                binding.root.setOnClickListener {
+                    onItemClick(game)
+                }
+
+                binding.btnAddFavorit.setOnClickListener {
+                    onAddFavorite(game, position)
+                }
+
+            }
+            is RoomGameDetail -> {
+                binding.titleGame.text = game.name
+                binding.releaseGame.text = game.released
+                if (game.background_image.isNotEmpty()) {
+                    Glide.with(binding.root.context).load(game.background_image).placeholder(R.drawable.ic_launcher_background).into(binding.iconGame)
+                }
+
+                binding.root.setOnClickListener {
+                    onItemClick(game)
+                }
+
+                binding.btnAddFavorit.setOnClickListener {
+                    onAddFavorite(game, position)
+                }
+            }
+        }
+    }
+
+    internal fun setToFavorit() {
+        for (drawable in binding.btnAddFavorit.compoundDrawables) {
+            if (drawable != null) {
+                drawable.colorFilter =
+                    PorterDuffColorFilter(
+                        ContextCompat.getColor(binding.btnAddFavorit.context, R.color.red_500),
+                        PorterDuff.Mode.SRC_IN
+                    )
+            }
         }
 
-        binding.root.setOnClickListener {
-            onItemClick(game)
+    }
+
+    internal fun setToUnFavorit() {
+        for (drawable in binding.btnAddFavorit.compoundDrawables) {
+            if (drawable != null) {
+                drawable.colorFilter =
+                    PorterDuffColorFilter(
+                        ContextCompat.getColor(binding.btnAddFavorit.context, R.color.gray),
+                        PorterDuff.Mode.SRC_IN
+                    )
+            }
         }
     }
 }

@@ -16,14 +16,15 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class AppModule {
 
+
     @Provides
     @Singleton
-    fun providesDatabase(@ApplicationContext context: Context): FavoriteGameDatabase =
+    fun providesFavoriteGameDatabaseDatabase(@ApplicationContext context: Context): FavoriteGameDatabase =
         Room.databaseBuilder(context, FavoriteGameDatabase::class.java, "favoriteGame")
             .build()
 
     @Provides
-    fun providesPostDao(favoriteGameDatabase: FavoriteGameDatabase): FavoriteGameDao =
+    fun providesFavoritGameDao(favoriteGameDatabase: FavoriteGameDatabase): FavoriteGameDao =
         favoriteGameDatabase.getFavoriteGameDao()
 
 

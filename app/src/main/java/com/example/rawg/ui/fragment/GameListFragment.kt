@@ -2,9 +2,7 @@ package com.example.rawg.ui.fragment
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.core.os.bundleOf
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -17,6 +15,7 @@ import com.example.rawg.data.model.GameResponse
 import com.example.rawg.data.modelMapper.GameItem
 import com.example.rawg.databinding.FragmentGameListBinding
 import com.example.rawg.ui.adapter.GameAdapter
+import com.example.rawg.ui.adapter.ItemGameViewHolder
 import com.example.rawg.ui.viewmodel.GameListViewModel
 import com.example.rawg.utils.CONSTANTS
 import com.example.rawg.utils.obtainViewModel
@@ -24,6 +23,7 @@ import com.example.rawg.utils.typingListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.net.IDN
 
 @AndroidEntryPoint
 class GameListFragment : BaseFragment<FragmentGameListBinding>() {
@@ -34,7 +34,7 @@ class GameListFragment : BaseFragment<FragmentGameListBinding>() {
     private var listGame = arrayListOf<GameItem>()
 
     private val gameAdapter by lazy {
-        GameAdapter()
+        GameAdapter<GameItem>()
     }
 
     override val inflateLayout: (LayoutInflater, ViewGroup?, Boolean) -> FragmentGameListBinding
@@ -46,9 +46,21 @@ class GameListFragment : BaseFragment<FragmentGameListBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
         setupRecycleView()
         setupClickListener()
         setupObserver()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.menu, menu)
+        menu.findItem(R.id.action_favorit).isVisible = true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.action_favorit) navigateToFavoritPage()
+        return super.onOptionsItemSelected(item)
     }
 
     private fun setupObserver() {
@@ -112,6 +124,18 @@ class GameListFragment : BaseFragment<FragmentGameListBinding>() {
         gameAdapter.whenItemClick {
             navigateToDetailPage(it)
         }
+
+        gameAdapter.whenFavoritClick { data, position ->
+            lifecycleScope.launch {
+                if(viewModel.getGameFavoritById(data.id) == null) {
+                    viewModel.addGameToFavorit(data)
+                    setbuttonFavorit(position)
+                } else {
+                    viewModel.removeGameToFavorit(data)
+                    setbuttonUnFavorit(position)
+                }
+            }
+        }
     }
 
     private fun hideLoading() {
@@ -126,9 +150,21 @@ class GameListFragment : BaseFragment<FragmentGameListBinding>() {
         binding.rvList.visibility = View.VISIBLE
     }
 
+    private fun setbuttonFavorit(position: Int) {
+        (binding.rvList.findViewHolderForAdapterPosition(position) as ItemGameViewHolder).setToFavorit()
+    }
+
+    private fun setbuttonUnFavorit(position: Int) {
+        (binding.rvList.findViewHolderForAdapterPosition(position) as ItemGameViewHolder).setToUnFavorit()
+    }
+
     private fun navigateToDetailPage(data: GameItem) {
         val bundle = bundleOf(CONSTANTS.TAG_GAME_ID to data.id)
         findNavController().navigate(R.id.gameDetailFragment, bundle)
+    }
+
+    private fun navigateToFavoritPage() {
+        findNavController().navigate(R.id.gameFavoritFragment)
     }
 
 }

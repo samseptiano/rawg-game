@@ -4,8 +4,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.rawg.data.repository.SampleDataSourceImpl
-import com.example.rawg.domain.usecase.sampleUseCase.GameDetailUseCase
-import com.example.rawg.domain.usecase.sampleUseCase.GameListUseCase
+import com.example.rawg.domain.usecase.sampleUseCase.*
 import com.example.rawg.ui.viewmodel.GameDetailViewModel
 import com.example.rawg.ui.viewmodel.GameListViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -24,7 +23,11 @@ class ViewModelFactory @Inject constructor(private val repository: SampleDataSou
         return when {
             modelClass.isAssignableFrom(GameListViewModel::class.java) -> GameListViewModel(
                 context,
-                GameListUseCase(repository)
+                GameListUseCase(repository),
+                GameFavoritUseCase(repository),
+                GameFavoritAddUseCase(repository),
+                GameFavoritRemoveUseCase(repository),
+                GameFavoritItemUseCase(repository),
             ) as T
             modelClass.isAssignableFrom(GameDetailViewModel::class.java) -> GameDetailViewModel(
                 context,

@@ -17,4 +17,10 @@
         android:label="Detail Game"
         tools:layout="@layout/fragment_game_detail"/>
 
+    <fragment
+        android:id="@+id/gameFavoritFragment"
+        android:name="com.example.rawg.ui.fragment.GameFavoritFragment"
+        android:label="Your Favorite"
+        tools:layout="@layout/fragment_game_favorit"/>
+
 </navigation>

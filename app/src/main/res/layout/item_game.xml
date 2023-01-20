@@ -16,7 +16,6 @@
         android:scaleType="fitXY"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="@id/titleGame"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 
     <TextView
@@ -47,4 +46,17 @@
         app:layout_constraintTop_toBottomOf="@id/titleGame"
         app:layout_constraintStart_toStartOf="@id/titleGame"
         android:text="Release at: 2025/03/15"/>
+
+    <TextView
+        android:id="@+id/btn_add_favorit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_favorit"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:drawablePadding="@dimen/_4sdp"
+        app:layout_constraintTop_toBottomOf="@id/releaseGame"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:drawableStartCompat="@drawable/ic_heart"
+        app:drawableTint="@color/gray" />
 </androidx.constraintlayout.widget.ConstraintLayout>
