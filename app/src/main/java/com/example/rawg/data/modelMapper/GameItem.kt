@@ -6,5 +6,6 @@ data class GameItem(
     var name: String,
     var released: String,
     var background_image: String,
-    var platforms: List<Platform>
+    var platforms: List<Platform>,
+    var isAddFavorit: Boolean = false
 )

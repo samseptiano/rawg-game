@@ -68,13 +68,12 @@ class GameListFragment : BaseFragment<FragmentGameListBinding>() {
         lifecycleScope.launch {
             launch {
                 viewModel.getListGame(currentPage, pageSize, search)
+                viewModel.getListGameFavorit()
             }
             launch {
                 viewModel.gameList.observe(viewLifecycleOwner) { listGames ->
                     hideLoading()
                     showRecycleView()
-
-
 
                    listGames?.onEach { gameItem ->
                        if(listGame.any { it.id == (gameItem?.id ?: 0) }){
@@ -155,10 +154,12 @@ class GameListFragment : BaseFragment<FragmentGameListBinding>() {
 
     private fun setbuttonFavorit(position: Int) {
         (binding.rvList.findViewHolderForAdapterPosition(position) as ItemGameViewHolder).setToFavorit()
+        listGame[position].isAddFavorit = true
     }
 
     private fun setbuttonUnFavorit(position: Int) {
         (binding.rvList.findViewHolderForAdapterPosition(position) as ItemGameViewHolder).setToUnFavorit()
+        listGame[position].isAddFavorit = false
     }
 
     private fun navigateToDetailPage(data: GameItem) {

@@ -3,6 +3,7 @@ package com.example.rawg.ui.adapter
 import android.R.color
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -24,6 +25,12 @@ class GameAdapter<T> : BaseAdapter<ItemGameBinding, ItemGameViewHolder>() {
         resetGameData()
         listGame.addAll(data as Collection<T>)
         if(listGame.isNotEmpty()) notifyItemInserted(listGame.size)
+    }
+
+    internal fun notifyRemoveAndChange(position: Int) {
+        listGame.removeAt(position)
+        notifyItemRemoved(position)
+        notifyItemChanged(position)
     }
 
     internal fun resetGameData() {
@@ -61,6 +68,13 @@ class ItemGameViewHolder(private val binding: ItemGameBinding) :
             is GameItem -> {
                 binding.titleGame.text = game.name
                 binding.releaseGame.text = game.released
+
+                if(game.isAddFavorit) {
+                    setToFavorit()
+                } else {
+                    setToUnFavorit()
+                }
+
                 if (game.background_image.isNotEmpty()) {
                     Glide.with(binding.root.context).load(game.background_image).placeholder(R.drawable.ic_launcher_background).into(binding.iconGame)
                 }
@@ -88,6 +102,7 @@ class ItemGameViewHolder(private val binding: ItemGameBinding) :
                 binding.btnAddFavorit.text = binding.root.context.getString(R.string.remove_favorit)
 
                 binding.btnAddFavorit.setOnClickListener {
+                    Log.d("favorit", position.toString())
                     onAddFavorite(game, position)
                 }
             }

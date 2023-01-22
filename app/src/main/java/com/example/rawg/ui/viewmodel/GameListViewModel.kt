@@ -47,7 +47,7 @@ class GameListViewModel @Inject constructor(
     }
 
     internal suspend fun getListGameFavorit() {
-        useCaseFavorit.run(GameFavoritUseCase.Params()).collectLatest {
+        useCaseFavorit.run(GameFavoritUseCase.Params()).collect {
             _gameFavoritList.value = it
         }
     }

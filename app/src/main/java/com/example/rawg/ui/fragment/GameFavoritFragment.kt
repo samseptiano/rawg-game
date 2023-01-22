@@ -88,13 +88,12 @@ class GameFavoritFragment : BaseFragment<FragmentGameFavoritBinding>() {
         }
 
         gameAdapter.whenFavoritClick { data, position ->
-            lifecycleScope.launch{
-                Log.d("dataFavorit: ", data.toString()+" "+position+" "+listGameFavorit?.size)
-                viewModel.removeGameToFavorit(RoomGameDetail.toGameItem(data))
-                listGameFavorit?.remove(data)
-                gameAdapter.notifyDataSetChanged()
+                lifecycleScope.launch {
+                    viewModel.removeGameToFavorit(RoomGameDetail.toGameItem(data))
+                }
+                listGameFavorit?.removeAt(position)
+                gameAdapter.notifyRemoveAndChange(position)
             }
-        }
     }
 
     private fun hideNodata() {
