@@ -6,9 +6,9 @@ class ResponseWrapper<T>(
     @field:SerializedName("count")
     var count: Int,
     @field:SerializedName("next")
-    var next: String,
+    var next: String? = null,
     @field:SerializedName("previous")
-    var previous: String,
+    var previous: String? = null,
     @field:SerializedName("results")
     var results: T,
 )

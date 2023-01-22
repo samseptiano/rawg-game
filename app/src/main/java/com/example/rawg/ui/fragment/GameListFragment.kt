@@ -14,6 +14,7 @@ import com.example.rawg.base.ui.BaseFragment
 import com.example.rawg.base.ui.endlessscroll.EndlessRecyclerViewScrollListener
 import com.example.rawg.data.model.GameResponse
 import com.example.rawg.data.modelMapper.GameItem
+import com.example.rawg.data.roomModel.RoomGameDetail
 import com.example.rawg.databinding.FragmentGameListBinding
 import com.example.rawg.ui.adapter.GameAdapter
 import com.example.rawg.ui.adapter.ItemGameViewHolder
@@ -33,6 +34,7 @@ class GameListFragment : BaseFragment<FragmentGameListBinding>() {
     private var currentPage:Int = 1
     private var search: String? = null
     private var listGame = arrayListOf<GameItem>()
+    private var favListGame = arrayListOf<RoomGameDetail?>()
 
     private val gameAdapter by lazy {
         GameAdapter<GameItem>()
@@ -65,25 +67,34 @@ class GameListFragment : BaseFragment<FragmentGameListBinding>() {
     }
 
     private fun setupObserver() {
+        listGame.clear()
+
         lifecycleScope.launch {
             launch {
-                viewModel.getListGame(currentPage, pageSize, search)
                 viewModel.getListGameFavorit()
             }
-            launch {
-                viewModel.gameList.observe(viewLifecycleOwner) { listGames ->
-                    hideLoading()
-                    showRecycleView()
 
-                   listGames?.onEach { gameItem ->
-                       if(listGame.any { it.id == (gameItem?.id ?: 0) }){
-                           listGame.remove(gameItem)
-                       }
-                   }
+            viewModel.gameFavoritList.observe(viewLifecycleOwner) { gameListFav ->
+                favListGame.clear()
+                if (gameListFav != null) { favListGame.addAll(gameListFav) }
 
-                    listGame.addAll(listGames as List<GameItem>)
-                    gameAdapter.updateGameData(listGame)
+                launch {
+                    viewModel.getListGame(currentPage, pageSize, search)
                 }
+            }
+
+            viewModel.gameList.observe(viewLifecycleOwner) { listGames ->
+                hideLoading()
+                showRecycleView()
+
+                listGames?.map { gameItem ->
+                    if (gameItem == null) return@map
+                    gameItem.isAddFavorit = favListGame.find { it?.id == gameItem.id } != null
+
+                    listGame.add(gameItem)
+                }
+
+                gameAdapter.updateGameData(listGame.distinctBy { it.id })
             }
         }
     }
@@ -128,15 +139,16 @@ class GameListFragment : BaseFragment<FragmentGameListBinding>() {
         }
 
         gameAdapter.whenFavoritClick { data, position ->
-            lifecycleScope.launch(Dispatchers.IO) {
-                if(viewModel.getGameFavoritById(data.id) == null) {
-                    viewModel.addGameToFavorit(data)
-                    setbuttonFavorit(position)
-                } else {
+            lifecycleScope.launch {
+                if(data.isAddFavorit) {
                     viewModel.removeGameToFavorit(data)
-                    setbuttonUnFavorit(position)
+                } else {
+                    viewModel.addGameToFavorit(data)
                 }
             }
+
+            if(data.isAddFavorit) setbuttonUnFavorit(position) else setbuttonFavorit(position)
+            gameAdapter.updateGameData(listGame)
         }
     }
 

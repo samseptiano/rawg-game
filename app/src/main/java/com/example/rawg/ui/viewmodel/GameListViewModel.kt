@@ -1,6 +1,7 @@
 package com.example.rawg.ui.viewmodel
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.rawg.base.viewmodel.BaseViewModel
@@ -10,7 +11,6 @@ import com.example.rawg.domain.usecase.sampleUseCase.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
 import javax.inject.Inject
 
 /**
@@ -41,7 +41,6 @@ class GameListViewModel @Inject constructor(
         useCase.run(param).apply {
             onSuccess {
                 _gameList.value = it.results
-
             }
         }
     }
@@ -60,7 +59,7 @@ class GameListViewModel @Inject constructor(
         useCaseFavoritDelete.run(GameFavoritRemoveUseCase.Params(gameItem))
     }
 
-    internal suspend fun getGameFavoritById(id: Int) : RoomGameDetail? {
+    internal suspend fun getGameFavoritById(id: Int): Any {
         return useCaseFavoritItem.run(GameFavoritItemUseCase.Params(id))
     }
 }

@@ -27,7 +27,7 @@ interface FavoriteGameDao {
     fun getAllFavoriteGame(): Flow<List<RoomGameDetail>>
 
     @Query("SELECT * FROM favoriteGame where id = :id")
-    fun getFavoriteGameById(id: Int): RoomGameDetail
+    fun getFavoriteGameById(id: Int): RoomGameDetail?
 
     @Query("SELECT * FROM platform WHERE gameId = :gameId ORDER BY id ASC")
     fun getPletform(gameId: Int): Flow<List<RoomPlatform>>

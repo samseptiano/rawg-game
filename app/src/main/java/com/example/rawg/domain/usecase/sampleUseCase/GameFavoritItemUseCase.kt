@@ -11,13 +11,18 @@ import javax.inject.Inject
  * @author SamuelSep on 4/20/2021.
  */
 class GameFavoritItemUseCase @Inject constructor(private val repository: SampleDataSource) :
-    BaseUseCase<RoomGameDetail, GameFavoritItemUseCase.Params>() {
+    BaseUseCase<Any, GameFavoritItemUseCase.Params>() {
 
     class Params(val id: Int)
 
-    override suspend fun run(params: Params) : RoomGameDetail {
-       return repository.getGameToFavoritById(params.id)
+    override suspend fun run(params: Params) : Any {
 
+        return try{
+            repository.getGameToFavoritById(params.id)
+            true
+        }catch (e:Exception){
+            false
+        }
     }
 
 }

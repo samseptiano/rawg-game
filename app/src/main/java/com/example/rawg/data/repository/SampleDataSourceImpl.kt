@@ -64,7 +64,7 @@ class SampleDataSourceImpl @Inject constructor(
         }
     }.catch {  }
 
-    override suspend fun getGameToFavoritById(id: Int): RoomGameDetail {
+    override suspend fun getGameToFavoritById(id: Int): RoomGameDetail? {
         return favoriteGameDao.getFavoriteGameById(id)
     }
 

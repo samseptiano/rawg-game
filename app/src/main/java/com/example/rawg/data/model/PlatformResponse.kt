@@ -10,7 +10,7 @@ data class PlatformResponse(
     var platform: PlatformItemResponse?,
     @field:SerializedName("release_at")
     var releaseAt: String?,
-    @field:SerializedName("requirements")
+    @field:SerializedName("requirements_en")
     var requirements: PlatformRequirementResponse?,
 ) {
     fun toPlatform() : Platform {

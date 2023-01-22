@@ -91,7 +91,6 @@ class GameFavoritFragment : BaseFragment<FragmentGameFavoritBinding>() {
                 lifecycleScope.launch {
                     viewModel.removeGameToFavorit(RoomGameDetail.toGameItem(data))
                 }
-                listGameFavorit?.removeAt(position)
                 gameAdapter.notifyRemoveAndChange(position)
             }
     }

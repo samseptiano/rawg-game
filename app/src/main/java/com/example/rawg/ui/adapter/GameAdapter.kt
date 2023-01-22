@@ -24,13 +24,16 @@ class GameAdapter<T> : BaseAdapter<ItemGameBinding, ItemGameViewHolder>() {
     internal fun updateGameData(data: List<T?>?) {
         resetGameData()
         listGame.addAll(data as Collection<T>)
-        if(listGame.isNotEmpty()) notifyItemInserted(listGame.size)
+        if(listGame.isNotEmpty()) {
+            notifyItemInserted(listGame.size)
+            notifyItemChanged(listGame.size)
+        }
     }
 
     internal fun notifyRemoveAndChange(position: Int) {
         listGame.removeAt(position)
         notifyItemRemoved(position)
-        notifyItemChanged(position)
+        notifyItemRangeChanged(0, listGame.size)
     }
 
     internal fun resetGameData() {
@@ -102,7 +105,6 @@ class ItemGameViewHolder(private val binding: ItemGameBinding) :
                 binding.btnAddFavorit.text = binding.root.context.getString(R.string.remove_favorit)
 
                 binding.btnAddFavorit.setOnClickListener {
-                    Log.d("favorit", position.toString())
                     onAddFavorite(game, position)
                 }
             }
@@ -110,27 +112,12 @@ class ItemGameViewHolder(private val binding: ItemGameBinding) :
     }
 
     internal fun setToFavorit() {
-        for (drawable in binding.btnAddFavorit.compoundDrawables) {
-            if (drawable != null) {
-                drawable.colorFilter =
-                    PorterDuffColorFilter(
-                        ContextCompat.getColor(binding.btnAddFavorit.context, R.color.red_500),
-                        PorterDuff.Mode.SRC_IN
-                    )
-            }
-        }
-
+        binding.btnAddFavorit.setCompoundDrawablesWithIntrinsicBounds( R.drawable.red_heart_icon, 0, 0, 0)
+        binding.btnAddFavorit.setTextColor(binding.root.context.resources.getColor(R.color.red_700))
     }
 
     internal fun setToUnFavorit() {
-        for (drawable in binding.btnAddFavorit.compoundDrawables) {
-            if (drawable != null) {
-                drawable.colorFilter =
-                    PorterDuffColorFilter(
-                        ContextCompat.getColor(binding.btnAddFavorit.context, R.color.gray),
-                        PorterDuff.Mode.SRC_IN
-                    )
-            }
-        }
+        binding.btnAddFavorit.setCompoundDrawablesWithIntrinsicBounds( R.drawable.grey_heart_icon, 0, 0, 0)
+        binding.btnAddFavorit.setTextColor(binding.root.context.resources.getColor(R.color.gray))
     }
 }

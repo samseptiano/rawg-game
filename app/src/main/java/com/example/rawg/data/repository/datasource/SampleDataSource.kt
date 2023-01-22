@@ -14,7 +14,7 @@ interface SampleDataSource {
     suspend fun getGameList(page: Int?, pageCount: Int?, search: String?): ResultState<ResponseWrapper<List<GameItem?>?>>
     suspend fun getGameDetail(id: Int): ResultState<GameDetail?>
     suspend fun getAllGameFavorit(): Flow<List<RoomGameDetail>>
-    suspend fun getGameToFavoritById(id: Int): RoomGameDetail
+    suspend fun getGameToFavoritById(id: Int): RoomGameDetail?
     suspend fun addGameToFavorit(gameItem: GameItem)
     suspend fun removeToFavorit(gameItem: GameItem)
 }
