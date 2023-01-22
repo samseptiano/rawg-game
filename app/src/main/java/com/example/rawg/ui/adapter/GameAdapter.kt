@@ -85,6 +85,8 @@ class ItemGameViewHolder(private val binding: ItemGameBinding) :
                     onItemClick(game)
                 }
 
+                binding.btnAddFavorit.text = binding.root.context.getString(R.string.remove_favorit)
+
                 binding.btnAddFavorit.setOnClickListener {
                     onAddFavorite(game, position)
                 }

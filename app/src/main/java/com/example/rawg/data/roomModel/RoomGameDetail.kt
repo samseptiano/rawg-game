@@ -23,5 +23,15 @@ data class RoomGameDetail(
                 gameItem.background_image
             )
         }
+        fun toGameItem(roomGameDetail: RoomGameDetail) : GameItem {
+            return GameItem(
+                roomGameDetail.id,
+                roomGameDetail.slug,
+                roomGameDetail.name,
+                roomGameDetail.released,
+                roomGameDetail.background_image,
+                listOf()
+            )
+        }
     }
 }

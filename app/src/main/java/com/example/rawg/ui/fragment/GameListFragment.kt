@@ -3,6 +3,7 @@ package com.example.rawg.ui.fragment
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -73,9 +74,11 @@ class GameListFragment : BaseFragment<FragmentGameListBinding>() {
                     hideLoading()
                     showRecycleView()
 
-                   listGames?.mapIndexed { index, gameItem ->
-                       if(listGame.isNotEmpty() && gameItem?.id == listGame[index].id) {
-                           listGame.remove(listGame[index])
+
+
+                   listGames?.onEach { gameItem ->
+                       if(listGame.any { it.id == (gameItem?.id ?: 0) }){
+                           listGame.remove(gameItem)
                        }
                    }
 
@@ -126,7 +129,7 @@ class GameListFragment : BaseFragment<FragmentGameListBinding>() {
         }
 
         gameAdapter.whenFavoritClick { data, position ->
-            lifecycleScope.launch {
+            lifecycleScope.launch(Dispatchers.IO) {
                 if(viewModel.getGameFavoritById(data.id) == null) {
                     viewModel.addGameToFavorit(data)
                     setbuttonFavorit(position)

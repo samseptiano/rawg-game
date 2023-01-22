@@ -19,7 +19,7 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun providesFavoriteGameDatabaseDatabase(@ApplicationContext context: Context): FavoriteGameDatabase =
+    fun providesFavoriteGameDatabase(@ApplicationContext context: Context): FavoriteGameDatabase =
         Room.databaseBuilder(context, FavoriteGameDatabase::class.java, "favoriteGame")
             .build()
 

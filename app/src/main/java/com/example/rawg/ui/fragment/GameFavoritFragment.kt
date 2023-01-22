@@ -2,6 +2,7 @@ package com.example.rawg.ui.fragment
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -17,11 +18,12 @@ import com.example.rawg.utils.CONSTANTS
 import com.example.rawg.utils.obtainViewModel
 import com.example.rawg.utils.typingListener
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class GameFavoritFragment : BaseFragment<FragmentGameFavoritBinding>() {
-    private var listGameFavorit : List<RoomGameDetail?>? = null
+    private var listGameFavorit: List<RoomGameDetail?>? = null
     private val gameAdapter by lazy {
         GameAdapter<RoomGameDetail>()
     }
@@ -49,7 +51,7 @@ class GameFavoritFragment : BaseFragment<FragmentGameFavoritBinding>() {
                 viewModel.gameFavoritList.observe(viewLifecycleOwner) { listGames ->
                     listGameFavorit = listGames
 
-                    if(listGames?.isNotEmpty() == true) {
+                    if (listGames?.isNotEmpty() == true) {
                         hideNodata()
                         showRecycleView()
                     } else {
@@ -82,6 +84,14 @@ class GameFavoritFragment : BaseFragment<FragmentGameFavoritBinding>() {
 
         gameAdapter.whenItemClick {
             navigateToDetailPage(it)
+        }
+
+        gameAdapter.whenFavoritClick { data, position ->
+            listGameFavorit?.let { gameAdapter.notifyItemRangeRemoved(position, it.size) }
+            Toast.makeText(requireContext(), position.toString(), Toast.LENGTH_LONG).show()
+            lifecycleScope.launch(Dispatchers.IO) {
+                viewModel.removeGameToFavorit(RoomGameDetail.toGameItem(data))
+            }
         }
     }
 

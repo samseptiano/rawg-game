@@ -16,7 +16,7 @@ class GameFavoritItemUseCase @Inject constructor(private val repository: SampleD
     class Params(val id: Int)
 
     override suspend fun run(params: Params) : RoomGameDetail {
-       return repository.getGameToFavoritById(params.id)!!
+       return repository.getGameToFavoritById(params.id)
 
     }
 
