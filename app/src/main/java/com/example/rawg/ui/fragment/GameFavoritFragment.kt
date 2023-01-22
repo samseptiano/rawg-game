@@ -1,6 +1,7 @@
 package com.example.rawg.ui.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.core.os.bundleOf
@@ -23,7 +24,7 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class GameFavoritFragment : BaseFragment<FragmentGameFavoritBinding>() {
-    private var listGameFavorit: List<RoomGameDetail?>? = null
+    private var listGameFavorit: ArrayList<RoomGameDetail?>? = null
     private val gameAdapter by lazy {
         GameAdapter<RoomGameDetail>()
     }
@@ -49,7 +50,7 @@ class GameFavoritFragment : BaseFragment<FragmentGameFavoritBinding>() {
             }
             launch {
                 viewModel.gameFavoritList.observe(viewLifecycleOwner) { listGames ->
-                    listGameFavorit = listGames
+                    listGameFavorit = listGames as ArrayList<RoomGameDetail?>?
 
                     if (listGames?.isNotEmpty() == true) {
                         hideNodata()
@@ -87,10 +88,11 @@ class GameFavoritFragment : BaseFragment<FragmentGameFavoritBinding>() {
         }
 
         gameAdapter.whenFavoritClick { data, position ->
-            listGameFavorit?.let { gameAdapter.notifyItemRangeRemoved(position, it.size) }
-            Toast.makeText(requireContext(), position.toString(), Toast.LENGTH_LONG).show()
-            lifecycleScope.launch(Dispatchers.IO) {
+            lifecycleScope.launch{
+                Log.d("dataFavorit: ", data.toString()+" "+position+" "+listGameFavorit?.size)
                 viewModel.removeGameToFavorit(RoomGameDetail.toGameItem(data))
+                listGameFavorit?.remove(data)
+                gameAdapter.notifyDataSetChanged()
             }
         }
     }
