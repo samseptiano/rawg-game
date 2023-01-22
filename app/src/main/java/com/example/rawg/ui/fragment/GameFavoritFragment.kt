@@ -77,12 +77,6 @@ class GameFavoritFragment : BaseFragment<FragmentGameFavoritBinding>() {
     }
 
     private fun setupClickListener() {
-        binding.rtSearch.typingListener {
-            lifecycleScope.launch {
-
-            }
-        }
-
         gameAdapter.whenItemClick {
             navigateToDetailPage(it)
         }
