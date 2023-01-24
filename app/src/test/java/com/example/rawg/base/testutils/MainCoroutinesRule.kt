@@ -1,4 +1,4 @@
-package com.example.rawg
+package com.example.rawg.base.testutils
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
