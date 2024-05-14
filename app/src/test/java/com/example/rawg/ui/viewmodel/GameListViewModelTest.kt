@@ -2,12 +2,11 @@ package com.example.rawg.ui.viewmodel
 
 import android.content.Context
 import com.example.rawg.BaseUnit
-import com.example.rawg.base.testutils.MainCoroutinesRule
 import com.example.rawg.base.data.ResponseWrapper
 import com.example.rawg.base.data.ResultState
+import com.example.rawg.base.testutils.MainCoroutinesRule
 import com.example.rawg.data.modelMapper.GameItem
 import com.example.rawg.data.repository.datasource.SampleDataSource
-import com.example.rawg.data.roomModel.RoomGameDetail
 import com.example.rawg.domain.dao.FavoriteGameDao
 import com.example.rawg.domain.database.FavoriteGameDatabase
 import com.example.rawg.domain.usecase.sampleUseCase.GameFavoritAddUseCase
@@ -16,18 +15,12 @@ import com.example.rawg.domain.usecase.sampleUseCase.GameFavoritRemoveUseCase
 import com.example.rawg.domain.usecase.sampleUseCase.GameFavoritUseCase
 import com.example.rawg.domain.usecase.sampleUseCase.GameListUseCase
 import io.mockk.MockKAnnotations
-import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
-import io.mockk.just
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert
